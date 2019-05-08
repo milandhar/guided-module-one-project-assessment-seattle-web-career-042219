@@ -183,7 +183,12 @@ class CommandLineInterface
     # end
 
     def add_topic_to_favorites
-
+      Article.all.select do |article|
+        puts "Do you want to Bookmark this article?: (yes/no)"
+        if user_bookmark == "yes"
+          #Bookmark.create()
+        elsif user_bookmark == "no"
+          
     end
 
     def invalid_command
