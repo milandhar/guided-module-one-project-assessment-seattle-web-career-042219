@@ -21,7 +21,7 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
           article
         end
       end
-      end.compact
+    end.compact
 end
 
 

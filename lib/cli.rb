@@ -4,6 +4,7 @@ require_relative '../db/seeds.rb'
 class CommandLineInterface
   attr_accessor :chosen_topic, :user_name
 
+  @@article_limit = 5
   @chosen_topic = ""
   @article_array = []
   @user_name = ""
@@ -210,5 +211,21 @@ class CommandLineInterface
     def end_session
         puts "Good Bye"
         return
+    end
+
+    def print_articles
+      i = 1
+
+      user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      user_list.each do |article|
+        puts
+        puts "#{i}. #{article.title}"
+        puts "      #{article.section}"
+        puts "      #{article.byline}"
+        puts "      #{article.abstract}"
+        puts "      #{article.short_url}"
+        puts
+        i+=1
+      end
     end
 end
