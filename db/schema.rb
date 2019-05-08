@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "abstract"
   end
 
-  create_table "user_articles", force: :cascade do |t|
+  create_table "bookmarked_articles", force: :cascade do |t|
     t.integer "user_id"
     t.integer "article_id"
   end
