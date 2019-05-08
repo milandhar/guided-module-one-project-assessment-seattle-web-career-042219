@@ -58,20 +58,20 @@ class CommandLineInterface
         if user_input == "q"
           quit_program
         elsif User.find_by(name: user_input) == nil
-          puts "Incorrect user name!"
-          puts "Would you like to create a new user name? (y/n)"
+          puts "        Incorrect user name!"
+          puts "        Would you like to create a new user name? (y/n)"
           user_decision = gets.chomp
           if user_decision == "y"
             create_user
           elsif user_decision == "n"
-            print "Please enter correct username: "
+            print "        Please enter correct username: "
             user_input = gets.chomp
             load_user(user_input)
           end
         else
           user_input == User.find_by(name: user_input).name
           puts
-          puts "Welcome, #{user_input}"
+          puts "        Welcome, #{user_input}! Good to see you back!"
           puts
           @user_name = user_input
         end
@@ -79,35 +79,40 @@ class CommandLineInterface
       end
 
     def topic_prompt
-      puts "Please Select a Section: (q to quit)"
-      puts "1. Arts"
-      puts "2. Automobiles"
-      puts "3. Books"
-      puts "4. Business"
-      puts "5. Fashion"
-      puts "6. Food"
-      puts "7. Health"
-      puts "8. Home"
-      puts "9. Insider"
-      puts "10. Magazine"
-      puts "11. Movies"
-      puts "12. National"
-      puts "13. NY Region"
-      puts "14. Obituaries"
-      puts "15. Opinion"
-      puts "16. Politics"
-      puts "17. Real Estate"
-      puts "18. Science"
-      puts "19. Sports"
-      puts "20. Sunday Review"
-      puts "21. Technology"
-      puts "22. Theater"
-      puts "23. Times Magazine"
-      puts "24. Travel"
-      puts "25. Upshot"
-      puts "26. World"
+      puts
+      print "        1. Arts "
+      puts "              2. Automobiles"
+      print "        3. Books"
+      puts "              4. Business"
+      print "        5. Fashion"
+      puts "            6. Food"
+      print "        7. Health"
+      puts "             8. Home"
+      print "        9. Insider"
+      puts "            10. Magazine"
+      print "        11. Movies"
+      puts "            12. National"
+      print "        13. NY Region"
+      puts "         14. Obituaries"
+      print "        15. Opinion"
+      puts "           16. Politics"
+      print "        17. Real Estate"
+      puts "       18. Science"
+      print "        19. Sports"
+      puts "            20. Sunday Review"
+      print "        21. Technology"
+      puts "        22. Theater"
+      print "        23. Times Magazine"
+      puts "    24. Travel"
+      print "        25. Upshot"
+      puts "            26. World"
+      puts
+      print "        Select a Section you would like to read about! (or press 'q' to quit): "
 
       user_selection = gets.chomp
+      if user_selection == "q"
+        quit_program
+      end
       @chosen_topic = ""
 
       case user_selection
@@ -168,27 +173,27 @@ class CommandLineInterface
       else
         @chosen_topic = "error"
       end
-
-
     end
 
-    def get_topic
-        print "Enter a topic youd like to read about: "
-        topic = gets.chomp
-        article = Article.all.find_by(section: topic)
-        interpolate_url
-    end
+    # def get_topic
+    #     print "        Enter a Section you would like to read about (or press 'q' to quit): "
+    #     topic = gets.chomp
+    #     article = Article.all.find_by(section: topic)
+    #     interpolate_url_and_seed_db
+    # end
 
     def add_topic_to_favorites
 
     end
 
     def invalid_command
-      puts "Please try again or press q to quit"
+      puts "        Please try again or press q to quit"
     end
 
     def quit_program
-      puts "        Goodbye"
+      puts
+      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
+      puts
       abort
     end
 
@@ -208,7 +213,7 @@ class CommandLineInterface
     end
 
     def end_session
-        puts "Good Bye"
+        puts "        Good Bye"
         return
     end
 end
