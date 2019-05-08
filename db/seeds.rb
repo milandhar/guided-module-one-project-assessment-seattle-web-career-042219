@@ -21,10 +21,8 @@ end
   def upload_articles_to_db(user_section = "Health")
     get_articles_from_api(user_section).each do |article|
       Article.create(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["section"], byline: article["byline"], abstract: article["abstract"])
-      binding.pry
     end
   end
-  binding.pry
 
 #
 # i = 0
