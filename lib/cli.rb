@@ -139,7 +139,8 @@ class CommandLineInterface
       elsif chosen_topic == "quit"
         end_session
       else
-        api_url = ""
+        api_url = "https://api.nytimes.com/svc/topstories/v2/.#{chosen_topic}json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
+        binding.pry
       end
 
     end
@@ -148,9 +149,6 @@ class CommandLineInterface
         puts "Good Bye"
         return
     end
-
-
-
 
 
     def get_user
