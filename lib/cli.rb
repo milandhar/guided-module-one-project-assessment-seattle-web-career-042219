@@ -24,7 +24,7 @@ class CommandLineInterface
         user_input = gets.chomp
 
         if user_input == "q"
-          quit
+          quit_program
         end
         if user_input == ""
             create_user
@@ -54,14 +54,10 @@ class CommandLineInterface
     end
 
     def load_user(user_input)
-        binding.pry
-        if User.find_by(name: user_input) == nil
-
-        else
-        if user_input == User.find_by(name: user_input).name
-          puts "Welcome, #{user_input}"
-          @user_name = user_input
-        else
+        #binding.pry
+        if user_input == "q"
+          quit_program
+        elsif User.find_by(name: user_input) == nil
           puts "Incorrect user name!"
           puts "Would you like to create a new user name? (y/n)"
           user_decision = gets.chomp
@@ -71,12 +67,16 @@ class CommandLineInterface
             print "Please enter correct username: "
             user_input = gets.chomp
             load_user(user_input)
-          else
-            quit
           end
-            #can add while loop here for incorrect responses
+        else
+          user_input == User.find_by(name: user_input).name
+          puts
+          puts "Welcome, #{user_input}"
+          puts
+          @user_name = user_input
         end
-    end
+            #can add while loop here for incorrect responses
+      end
 
     def topic_prompt
       puts "Please Select a Section: (q to quit)"
@@ -187,7 +187,7 @@ class CommandLineInterface
       puts "Please try again or press q to quit"
     end
 
-    def quit
+    def quit_program
       puts "        Goodbye"
       abort
     end

@@ -12,16 +12,28 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
 
 
     article_array = response_hash["results"].map do |article|
+      if chosen_topic == "politics"
+        if article["subsection"] == chosen_topic.capitalize
+          article
+        end
+      else
         if article["section"] == chosen_topic.capitalize
           article
         end
+      end
       end.compact
 end
 
 
-  def upload_articles_to_db(articles, chosen_topic = "Health")
+  def upload_articles_to_db(articles, chosen_topic = "health")
     articles.each do |article|
-      Article.create(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["section"], byline: article["byline"], abstract: article["abstract"])
+      #binding.pry
+      if chosen_topic == "politics"
+        #binding.pry
+        Article.create(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["subsection"], byline: article["byline"], abstract: article["abstract"])
+      else
+        Article.create(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["section"], byline: article["byline"], abstract: article["abstract"])
+      end
     end
   end
 
