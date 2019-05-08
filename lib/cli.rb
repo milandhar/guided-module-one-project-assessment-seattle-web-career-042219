@@ -2,21 +2,40 @@ require 'pry'
 
 class CommandLineInterface
 
-    # Greeting Prompt
+    attr_accessor :user_name
 
+    def greeting_prompt
+        system('clear')
+        puts
+        puts "        Welcome to NYTimes Bookmark Tool
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The best resource for finding top articles
+        based on your favorite topics!"
+        puts
+    end
+    
+    def create_or_load_user
+        puts "        Before we dwell into the NYTimes,
+        create a new Username, or if you have one,
+        press enter to enter your username!"
+        puts
+        print "Create Username: "
+        if user_name == ""
+            print "Enter Username: "
+            user = gets.chomp
+            load_user(user)
+        else
+            user_name = gets.chomp
+            create_user(user_name)
+        end
+    end
+    
+    def create_user(user_name)
+        new_user = User.create(name: user_name)
+    end
 
-    #     puts "Enter a topic you'd like to read about: "
-    # end
-
-    # def get_input
-    #     topic = gets.chomp
-    # end
-
-    def run
-        greet
-        puts "Enter a topic youd like to read about:"
-        topic = gets.chomp
-        article = Article.all.find_by(section: topic)
+    def load_user(user)
+        user = User.find_by(name: user)
     end
 
     def topic_prompt
@@ -116,6 +135,17 @@ class CommandLineInterface
 
     end
 
+    def get_topic
+        print "Enter a topic youd like to read about: "
+        topic = gets.chomp
+        article = Article.all.find_by(section: topic)
+        interpolate_url
+    end
+
+    def add_topic_to_favorites
+
+    end
+
     def invalid_command
       puts "Please try again or press q to quit"
     end
@@ -128,40 +158,13 @@ class CommandLineInterface
       elsif chosen_topic == "quit"
         end_session
       else
-        api_url = "https://api.nytimes.com/svc/topstories/v2/.#{chosen_topic}json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
-        binding.pry
+        api_url = "https://api.nytimes.com/svc/topstories/v2/#{chosen_topic}.json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
+        # binding.pry
       end
-
     end
 
     def end_session
         puts "Good Bye"
         return
-    end
-
-
-    def get_user
-        puts "Please enter your name: "
-        user_name = gets.chomp
-        new_user = User.create(name: user_name)
-
-    def greeting_prompt
-        system('clear')
-        puts
-        puts "        Welcome to NYTimes Bookmark Tool
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        The best resource for finding top articles
-        based on your favorite topics!"
-        puts
-    end
-    
-    def create_user
-        puts "        Before we dwell into the NYTimes,
-        create a new Username!"
-        puts
-        print "Create Username: "
-        username = gets.chomp
-        new_user = User.new(name: username)
-
     end
 end
