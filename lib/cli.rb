@@ -69,6 +69,7 @@ class CommandLineInterface
           @user_id = User.find_by(name: user_input).id
         end
             #can add while loop here for incorrect responses
+
       end
 
     def topic_prompt
@@ -230,6 +231,22 @@ class CommandLineInterface
     def end_session
         puts "        Good Bye"
         return
+    end
+
+    def print_articles
+      i = 1
+
+      user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      user_list.each do |article|
+        puts
+        puts "      #{i}. #{article.title}"
+        puts "      #{article.section}"
+        puts "      #{article.byline}"
+        puts "      #{article.abstract}"
+        puts "      #{article.short_url}"
+        puts
+        i+=1
+      end
     end
 end
 
