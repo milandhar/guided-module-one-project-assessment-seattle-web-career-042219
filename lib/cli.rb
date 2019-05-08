@@ -3,15 +3,42 @@ require_relative '../db/seeds.rb'
 
 class CommandLineInterface
   attr_accessor :chosen_topic
-
+  
   @chosen_topic = ""
   @article_array = []
 
-    def run
-        greet
-        puts "Enter a topic youd like to read about:"
-        topic = gets.chomp
-        article = Article.all.find_by(section: topic)
+    def greeting_prompt
+        system('clear')
+        puts
+        puts "        Welcome to NYTimes Bookmark Tool
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The best resource for finding top articles
+        based on your favorite topics!"
+        puts
+    end
+    
+    def create_or_load_user
+        puts "        Before we dwell into the NYTimes,
+        create a new Username, or if you have one,
+        press enter to enter your username!"
+        puts
+        print "Create Username: "
+        if user_name == ""
+            print "Enter Username: "
+            user = gets.chomp
+            load_user(user)
+        else
+            user_name = gets.chomp
+            create_user(user_name)
+        end
+    end
+    
+    def create_user(user_name)
+        new_user = User.create(name: user_name)
+    end
+
+    def load_user(user)
+        user = User.find_by(name: user)
     end
 
     def topic_prompt
@@ -108,6 +135,17 @@ class CommandLineInterface
 
     end
 
+    def get_topic
+        print "Enter a topic youd like to read about: "
+        topic = gets.chomp
+        article = Article.all.find_by(section: topic)
+        interpolate_url
+    end
+
+    def add_topic_to_favorites
+
+    end
+
     def invalid_command
       puts "Please try again or press q to quit"
     end
@@ -121,40 +159,14 @@ class CommandLineInterface
         end_session
       else
         api_url = "https://api.nytimes.com/svc/topstories/v2/#{chosen_topic}.json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
+        # binding.pry
         upload_articles_to_db(get_articles_from_api(api_url, @chosen_topic), @chosen_topic)
-      end
 
+      end
     end
 
     def end_session
         puts "Good Bye"
         return
-    end
-
-
-    def get_user
-        puts "Please enter your name: "
-        user_name = gets.chomp
-        new_user = User.create(name: user_name)
-      end
-
-    def greeting_prompt
-        system('clear')
-        puts
-        puts "        Welcome to NYTimes Bookmark Tool
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        The best resource for finding top articles
-        based on your favorite topics!"
-        puts
-    end
-
-    def create_user
-        puts "        Before we dwell into the NYTimes,
-        create a new Username!"
-        puts
-        print "Create Username: "
-        username = gets.chomp
-        new_user = User.new(name: username)
-
     end
 end

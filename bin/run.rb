@@ -5,6 +5,6 @@ require_relative '../db/seeds.rb'
 cli = CommandLineInterface.new
 
 cli.greeting_prompt
-cli.create_user
+cli.create_or_load_user
 cli.topic_prompt
 cli.interpolate_url_and_seed_db(cli.chosen_topic)
