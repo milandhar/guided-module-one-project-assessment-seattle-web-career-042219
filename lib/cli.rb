@@ -2,10 +2,11 @@ require 'pry'
 require_relative '../db/seeds.rb'
 
 class CommandLineInterface
-  attr_accessor :chosen_topic
-  
+  attr_accessor :chosen_topic, :user_name
+
   @chosen_topic = ""
   @article_array = []
+  @user_name = ""
 
     def greeting_prompt
         system('clear')
@@ -15,31 +16,67 @@ class CommandLineInterface
         The best resource for finding top articles
         based on your favorite topics!"
         puts
-    end
-    
-    def create_or_load_user
         puts "        Before we dwell into the NYTimes,
-        create a new Username, or if you have one,
-        press enter to enter your username!"
+        enter your username, or if you don't have one,
+        press enter to create a new username!"
         puts
-        print "Create Username: "
-        if user_name == ""
-            print "Enter Username: "
-            user = gets.chomp
-            load_user(user)
+        print "        username: "
+        user_input = gets.chomp
+
+        if user_input == "q"
+          quit_program
+        end
+        if user_input == ""
+            create_user
         else
-            user_name = gets.chomp
-            create_user(user_name)
+            #binding.pry
+            load_user(user_input)
         end
     end
-    
-    def create_user(user_name)
-        new_user = User.create(name: user_name)
+
+    # def create_or_load_user
+    #     print "Create Username: "
+    #     user_name = gets.chomp
+    #     if user_name == ""
+    #         print "Enter Username: "
+    #         user = gets.chomp
+    #         load_user(user)
+    #     else
+    #         create_user(user_name)
+    #     end
+    # end
+
+    def create_user
+        print "Create Username: "
+        new_name = gets.chomp
+        new_user = User.create(name: new_name)
+        @user_name = new_name
     end
 
-    def load_user(user)
-        user = User.find_by(name: user)
-    end
+    def load_user(user_input)
+        #binding.pry
+        if user_input == "q"
+          quit_program
+        elsif User.find_by(name: user_input) == nil
+          puts "Incorrect user name!"
+          puts "Would you like to create a new user name? (y/n)"
+          user_decision = gets.chomp
+          if user_decision == "y"
+            create_user
+          elsif user_decision == "n"
+            print "Please enter correct username: "
+            user_input = gets.chomp
+            load_user(user_input)
+          end
+        else
+          user_input == User.find_by(name: user_input).name
+          puts
+          puts "Welcome, #{user_input}"
+          puts
+          @user_name = user_input
+        end
+            #can add while loop here for incorrect responses
+      end
 
     def topic_prompt
       puts "Please Select a Section: (q to quit)"
@@ -148,6 +185,11 @@ class CommandLineInterface
 
     def invalid_command
       puts "Please try again or press q to quit"
+    end
+
+    def quit_program
+      puts "        Goodbye"
+      abort
     end
 
     def interpolate_url_and_seed_db(chosen_topic)
