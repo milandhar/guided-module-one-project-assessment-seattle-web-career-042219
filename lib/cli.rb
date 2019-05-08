@@ -8,6 +8,7 @@ class CommandLineInterface
   @chosen_topic = ""
   @article_array = []
   @user_name = ""
+  @user_id
 
     def greeting_prompt
         system('clear')
@@ -52,6 +53,7 @@ class CommandLineInterface
         new_name = gets.chomp
         new_user = User.create(name: new_name)
         @user_name = new_name
+        @user_id = new_user.id
     end
 
     def load_user(user_input)
@@ -75,8 +77,10 @@ class CommandLineInterface
           puts "        Welcome, #{user_input}! Good to see you back!"
           puts
           @user_name = user_input
+          @user_id = User.find_by(name: user_input).id
         end
             #can add while loop here for incorrect responses
+
       end
 
     def topic_prompt
@@ -224,7 +228,7 @@ class CommandLineInterface
       user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
       user_list.each do |article|
         puts
-        puts "#{i}. #{article.title}"
+        puts "      #{i}. #{article.title}"
         puts "      #{article.section}"
         puts "      #{article.byline}"
         puts "      #{article.abstract}"
