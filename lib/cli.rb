@@ -3,11 +3,13 @@ require_relative '../db/seeds.rb'
 
 class CommandLineInterface
   attr_accessor :chosen_topic, :user_name
+  attr_reader :id
 
   @@article_limit = 5
   @chosen_topic = ""
   @article_array = []
   @user_name = ""
+  @user_id = 0
 
     def greeting_prompt
         system('clear')
@@ -35,23 +37,12 @@ class CommandLineInterface
         end
     end
 
-    # def create_or_load_user
-    #     print "Create Username: "
-    #     user_name = gets.chomp
-    #     if user_name == ""
-    #         print "Enter Username: "
-    #         user = gets.chomp
-    #         load_user(user)
-    #     else
-    #         create_user(user_name)
-    #     end
-    # end
-
     def create_user
         print "Create Username: "
         new_name = gets.chomp
         new_user = User.create(name: new_name)
         @user_name = new_name
+        @user_id = new_user.id
     end
 
     def load_user(user_input)
@@ -75,6 +66,7 @@ class CommandLineInterface
           puts "        Welcome, #{user_input}! Good to see you back!"
           puts
           @user_name = user_input
+          @user_id = User.find_by(name: user_input).id
         end
             #can add while loop here for incorrect responses
       end
@@ -183,26 +175,6 @@ class CommandLineInterface
     #     interpolate_url_and_seed_db
     # end
 
-    def add_topic_to_favorites
-      Article.all.select do |article|
-        puts "Do you want to Bookmark this article?: (yes/no)"
-        if user_bookmark == "yes"
-          #Bookmark.create()
-        elsif user_bookmark == "no"
-          
-    end
-
-    def invalid_command
-      puts "        Please try again or press q to quit"
-    end
-
-    def quit_program
-      puts
-      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
-      puts
-      abort
-    end
-
     def interpolate_url_and_seed_db(chosen_topic)
       api_url = ""
       if @chosen_topic == "error"
@@ -218,12 +190,6 @@ class CommandLineInterface
       end
     end
 
-    def end_session
-        puts "        Good Bye"
-        return
-    end
-
-
     def print_articles
       i = 1
 
@@ -238,6 +204,32 @@ class CommandLineInterface
         puts
         i+=1
       end
+    end
+
+    def add_topic_to_favorites
+      Article.all.each do |article|
+        puts "Do you want to Bookmark this article?: (yes/no)"
+        if user_bookmark == "yes"
+          BookmarkedArticle.create(user_id: @user_id, article_id: article.id)
+        elsif user_bookmark == "no"
+        end
+      end
+    end
+
+    def invalid_command
+      puts "        Please try again or press q to quit"
+    end
+
+    def quit_program
+      puts
+      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
+      puts
+      abort
+    end
+
+    def end_session
+        puts "        Good Bye"
+        return
     end
 end
 
