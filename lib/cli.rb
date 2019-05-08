@@ -3,12 +3,13 @@ require_relative '../db/seeds.rb'
 
 class CommandLineInterface
   attr_accessor :chosen_topic, :user_name
+  attr_reader :id
 
   @@article_limit = 5
   @chosen_topic = ""
   @article_array = []
   @user_name = ""
-  @user_id
+  @user_id = 0
 
     def greeting_prompt
         system('clear')
@@ -35,18 +36,6 @@ class CommandLineInterface
             load_user(user_input)
         end
     end
-
-    # def create_or_load_user
-    #     print "Create Username: "
-    #     user_name = gets.chomp
-    #     if user_name == ""
-    #         print "Enter Username: "
-    #         user = gets.chomp
-    #         load_user(user)
-    #     else
-    #         create_user(user_name)
-    #     end
-    # end
 
     def create_user
         print "Create Username: "
@@ -187,21 +176,6 @@ class CommandLineInterface
     #     interpolate_url_and_seed_db
     # end
 
-    def add_topic_to_favorites
-
-    end
-
-    def invalid_command
-      puts "        Please try again or press q to quit"
-    end
-
-    def quit_program
-      puts
-      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
-      puts
-      abort
-    end
-
     def interpolate_url_and_seed_db(chosen_topic)
       api_url = ""
       if @chosen_topic == "error"
@@ -215,6 +189,43 @@ class CommandLineInterface
         upload_articles_to_db(get_articles_from_api(api_url, @chosen_topic), @chosen_topic)
 
       end
+    end
+
+    def print_articles
+      i = 1
+
+      user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      user_list.each do |article|
+        puts
+        puts "#{i}. #{article.title}"
+        puts "      #{article.section}"
+        puts "      #{article.byline}"
+        puts "      #{article.abstract}"
+        puts "      #{article.short_url}"
+        puts
+        i+=1
+      end
+    end
+
+    def add_topic_to_favorites
+      Article.all.each do |article|
+        puts "Do you want to Bookmark this article?: (yes/no)"
+        if user_bookmark == "yes"
+          BookmarkedArticle.create(user_id: @user_id, article_id: article.id)
+        elsif user_bookmark == "no"
+        end
+      end
+    end
+
+    def invalid_command
+      puts "        Please try again or press q to quit"
+    end
+
+    def quit_program
+      puts
+      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
+      puts
+      abort
     end
 
     def end_session
@@ -238,3 +249,4 @@ class CommandLineInterface
       end
     end
 end
+
