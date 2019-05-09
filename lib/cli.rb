@@ -1,4 +1,5 @@
 require 'pry'
+require 'time'
 require_relative '../db/seeds.rb'
 
 class CommandLineInterface
@@ -223,6 +224,7 @@ class CommandLineInterface
         puts "      #{article.byline}"
         puts "      #{article.abstract}"
         puts "      #{article.short_url}"
+        puts "      Published: #{Time.parse(article.published_date)}"
         puts
         i+=1
       end
@@ -287,11 +289,13 @@ class CommandLineInterface
       print "        Would you like to view another section? (y/n)"
       repeat_response = gets.chomp
       if repeat_response == "y"
-        @live == true
+        @live = true
       else
-        @live == false
+        @live = false
       end
     end
+
+
 
 
 end
