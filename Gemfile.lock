@@ -62,6 +62,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
+    word_wrap (1.0.0)
 
 PLATFORMS
   ruby
@@ -76,6 +77,7 @@ DEPENDENCIES
   rest-client
   sinatra-activerecord
   sqlite3
+  word_wrap
 
 BUNDLED WITH
    2.0.1

@@ -2,6 +2,7 @@ require_relative '../config/environment'
 require_relative '../lib/cli.rb'
 require_relative '../db/seeds.rb'
 require 'pry'
+require 'word_wrap'
 
 cli = CommandLineInterface.new
 
@@ -22,4 +23,3 @@ while cli.live == true
   cli.view_another_section_prompt
 end
 cli.quit_program
-
