@@ -233,26 +233,50 @@ class CommandLineInterface
 
     def add_topic_to_favorites
       response = "y"
-        puts "Would you like to add an article to your favories? (y/n)"
+        print "        Would you like to add an article to your favories? (y/n): "
         while response == "y"
         response = gets.chomp
+        puts
           if response == "y"
-        puts "Select article to add to bookmarks (1-5)"
+        print "        Select article to add to bookmarks (1-5): "
         desired_article = gets.chomp
+        puts
 
             if (1..(@user_list.length+1)).to_a.include?(desired_article.to_i) == false
-              puts "Nothing added to bookmarks"
+              puts "         Nothing added to bookmarks"
             else
             BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
-              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
+              puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
             end
-            puts "Would you like to add another article to your favories? (y/n)"
+            print "        Would you like to add another article to your favories? (y/n): "
         else
           response = "n"
         end
       end
     end
 
+    def view_bookmarks
+      puts
+      print "        To view your your List of Bookmarked articles, press '8'"
+      view_bookmarks = gets.chomp
+      puts
+       if view_bookmarks == "8"
+        j = 1
+        BookmarkedArticle.all.each do |bookmarked_article|
+          if bookmarked_article.user_id == @user_id
+            bookmark = Article.find(bookmarked_article.article_id)
+            puts
+            puts "#{j}. #{bookmark.title}"
+            #puts "      #{article.section}"
+            puts "      #{bookmark.byline}"
+            puts "      #{bookmark.abstract}"
+            puts "      #{bookmark.short_url}"
+            puts
+            j += 1
+          end
+        end
+      end
+    end
 
     def invalid_command
       puts "        Please try again or press q to quit"
@@ -269,5 +293,4 @@ class CommandLineInterface
         puts "        Good Bye"
         abort
     end
-
 end
