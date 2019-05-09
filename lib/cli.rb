@@ -55,9 +55,10 @@ class CommandLineInterface
         @user_name = new_name
         @user_id = new_user.id
         puts
-        puts "        ````````````````````````````````````````````````````````````````````````````````
+        welcome_user = "        ````````````````````````````````````````````````````````````````````````````````
         Welcome #{new_name}! Thank you for using the NYTimes Bookmark Tool!
         _______________________________________________________________________________"
+        puts welcome_user.colorize(:green)
         puts
     end
 
@@ -88,7 +89,8 @@ class CommandLineInterface
         else
           user_input == User.find_by(name: user_input).name
           puts
-          puts "        Welcome, #{user_input}! Good to see you back!"
+          welcome = "        Welcome, #{user_input}! Good to see you back!"
+          puts welcome.colorize(:blue)
           puts
           @user_name = user_input
           @user_id = User.find_by(name: user_input).id
@@ -223,7 +225,7 @@ class CommandLineInterface
       ----------------------------------------------"
       @user_list.each do |article|
 
-            paragraph = article.abstract[0..90] + "..."
+            paragraph = article.abstract[0..150] + "..."
             article_description = <<~ARTICLE_DESCRIPTION
 
             #{i}.   #{article.title.colorize(:light_green)}
@@ -304,7 +306,7 @@ class CommandLineInterface
         User.all.find(@user_id).articles.each do |bookmarked_article|
             bookmark = Article.find(bookmarked_article.id)
 
-            paragraph = (bookmark.abstract[0..90] + "...")
+            paragraph = (bookmark.abstract[0..150] + "...")
             @url = bookmark.short_url
 
             puts "#{j}.   #{bookmark.title.colorize(:light_green)}"
@@ -381,9 +383,10 @@ class CommandLineInterface
 
     def quit_program
       puts
-      puts "      ``````````````````````````````````````````````````````
+      good_bye = "      ``````````````````````````````````````````````````````
       Goodbye! Thank you for using NYTimes Bookmark Tool :)
       ......................................................"
+      puts good_bye.colorize(:light_red)
       puts
       abort
     end
