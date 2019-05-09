@@ -17,6 +17,7 @@ while cli.live == true
     cli.add_topic_to_favorites
   end
   cli.view_bookmarks
+  cli.remove_article_from_bookmarks
   cli.view_another_section_prompt
 end
 cli.quit_program

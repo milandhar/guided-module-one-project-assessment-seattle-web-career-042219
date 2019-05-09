@@ -278,9 +278,8 @@ class CommandLineInterface
       puts
        if view_bookmarks == "8"
         j = 1
-        BookmarkedArticle.all.each do |bookmarked_article|
-          if bookmarked_article.user_id == @user_id
-            bookmark = Article.find(bookmarked_article.article_id)
+        User.all.find(@user_id).articles.each do |bookmarked_article|
+            bookmark = Article.find(bookmarked_article.id)
             puts
             puts "#{j}. #{bookmark.title}"
             #puts "      #{article.section}"
@@ -290,7 +289,21 @@ class CommandLineInterface
             puts
             j += 1
           end
-        end
+      end
+    end
+
+    def remove_article_from_bookmarks
+      print "Do you want you remove an article from your Bookmarks? (y/n): "
+      user_answer = gets.chomp
+      puts
+      if user_answer == "y"
+        print "Please enter the the number from the article you want to remove: "
+        delete_number = gets.chomp
+        puts
+        delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
+        delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
+        BookmarkedArticle.destroy(delete_bookmark.id)
+        puts "#{delete_article.title} has been removed from your bookmarks!"
       end
     end
 
