@@ -218,21 +218,19 @@ class CommandLineInterface
           @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
       end
 
+      puts "
+      #{@chosen_topic.upcase.colorize(:red)}
+      ----------------------------------------------"
       @user_list.each do |article|
 
             paragraph = article.abstract[0..90] + "..."
             article_description = <<~ARTICLE_DESCRIPTION
 
             #{i}.   #{article.title.colorize(:light_green)}
-
-                    #{article.byline} 
-
+                    #{article.byline}
                     #{paragraph}
-
                     #{article.short_url}
-
                     Published: #{Time.parse(article.published_date)}
-
 
             ARTICLE_DESCRIPTION
             i += 1
@@ -264,7 +262,7 @@ class CommandLineInterface
               puts
               print "        Would you like to add another article to your Bookmarks? (y/n): "
             else
-            BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
+            BookmarkedArticle.find_or_create_by(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
               puts
               puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your Bookmarks!"
               puts
@@ -282,7 +280,7 @@ class CommandLineInterface
     end
 
     def view_bookmarks
-      print "        Do you want to view your your list of Bookmarked articles? (y/n): "
+      print "        Do you want to view your list of Bookmarked articles? (y/n): "
 
       view_bookmarks = gets.chomp
       puts
@@ -301,8 +299,8 @@ class CommandLineInterface
       j = 1
       puts "
       BOOKMARKS
-      _________________________________________________________"
-   
+      ----------------------------------------------"
+
         User.all.find(@user_id).articles.each do |bookmarked_article|
             bookmark = Article.find(bookmarked_article.id)
 
@@ -318,22 +316,27 @@ class CommandLineInterface
             puts "        #{(bookmark.short_url)}"
             puts
             j += 1
-        end
-
-      end
-
+          end
     end
 
     def open_website
+      loop_open = true
       print "        Do you want to open an article in your web browser? (y/n): "
       open_url = gets.chomp
       puts
+      while loop_open == true
       if open_url == "y"
         print "        Please enter the number from the article you want to open: "
         open_browser = gets.chomp
         puts
         website = User.all.find(@user_id).articles[open_browser.to_i - 1]
         Launchy.open(website.short_url)
+        print "        Do you want to open another article? (y/n): "
+        open_url = gets.chomp
+        puts
+      else
+        loop_open = false
+      end
       end
     end
 
@@ -353,7 +356,7 @@ class CommandLineInterface
           puts "        \"#{delete_article.title}\" has been removed from your Bookmarks!"
           puts
           if User.all.find(@user_id).articles.length > 0
-            print "         Would you like to remove another article from your Bookmarks? (y/n) "
+            print "        Would you like to remove another article from your Bookmarks? (y/n) "
             another_removal = gets.chomp
             puts
             if another_removal == 'y'
