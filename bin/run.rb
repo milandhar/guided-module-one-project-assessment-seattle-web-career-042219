@@ -11,3 +11,4 @@ cli.print_articles
 if cli.user_list.length > 0
   cli.add_topic_to_favorites
 end
+cli.view_and_edit_bookmarks
