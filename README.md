@@ -11,7 +11,7 @@ The NYTimes Bookmark Tool is a CLI application written in Ruby that allows users
 * Create and migrate the tables using `rake db:migrate`
 * Start the program: `ruby bin/run.rb`
 
-Optional - To read unlimited articles on the NYTimes, you must [subscribe](https://www.nytimes.com/subscription?campaignId=6W74R&&redirect_uri=https%3A%2F%2Fwww.nytimes.com%2F) to the New York Times. The Times limits non-subscribers to **reading** 5 articles per month. However, you do not have to subscribe to the Times in order to use the full functionality of the NYTimes Bookmark Tool. 
+Optional - To read unlimited articles on the NYTimes, you must [subscribe](https://www.nytimes.com/subscription?campaignId=6W74R&&redirect_uri=https%3A%2F%2Fwww.nytimes.com%2F) to the New York Times. The Times limits non-subscribers to **reading** 5 articles per month. However, you do not have to subscribe to the Times in order to use the full functionality of the NYTimes Bookmark Tool.
 
 ## Using the Program
 
@@ -29,6 +29,7 @@ Here are the features included in this version of the NYTimes Bookmark Tool:
 * Select an NYTimes section to view recent articles
 * Bookmark an article
 * View your bookmarks
+* Open a bookmark url in your default web browser 
 * Delete a bookmark from your list
 
 
@@ -39,7 +40,7 @@ Here is the list of the welcome screen along with the NYTimes sections the user 
 ![Imgur](https://i.imgur.com/aZSWato.png)
 
 Here is an example of a top-5 article result list:
-
+[Imgur](https://i.imgur.com/Yd73pga.png)
 
 ## Credits
 The NYTimes Bookmark Tool was developed by [Milan Dhar](https://github.com/milandhar) and [Vadim Stakhnyuk](https://github.com/VadimS4).
@@ -49,10 +50,13 @@ We used the following [Ruby Gems](https://rubygems.org/):
 * gem "sqlite3"
 * gem "pry"
 * gem "require_all"
-* gem "faker"
 * gem "rest-client"
 * gem "json"
-* gem 'word_wrap'
+* gem "colorize"
+* gem "launchy"
+
+
+
 
 Module One Final Project
 ========================
