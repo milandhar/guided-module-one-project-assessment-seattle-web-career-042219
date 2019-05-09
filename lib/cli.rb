@@ -10,6 +10,7 @@ class CommandLineInterface
   @article_array = []
   @user_name = ""
   @user_id = 0
+  @user_list = []
 
     def greeting_prompt
         system('clear')
@@ -194,8 +195,8 @@ class CommandLineInterface
     def print_articles
       i = 1
 
-      user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
-      user_list.each do |article|
+      @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      @user_list.each do |article|
         puts
         puts "#{i}. #{article.title}"
         puts "      #{article.section}"
@@ -205,16 +206,27 @@ class CommandLineInterface
         puts
         i+=1
       end
+      @user_list
     end
 
     def add_topic_to_favorites
-      Article.all.each do |article|
-        puts "Do you want to Bookmark this article?: (yes/no)"
-        if user_bookmark == "yes"
-          BookmarkedArticle.create(user_id: @user_id, article_id: article.id)
-        elsif user_bookmark == "no"
-        end
+      puts "Select article to add to bookmarks (1-5)"
+      desired_article = gets.chomp
+
+      if desired_article == ""
+        puts "Nothing added to bookmarks"
+      else
+      BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
+        puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
       end
+
+      # Article.all.each do |article|
+      #   puts "Do you want to Bookmark this article?: (yes/no)"
+      #   if user_bookmark == "yes"
+      #     BookmarkedArticle.create(user_id: @user_id, article_id: article.id)
+      #   elsif user_bookmark == "no"
+      #   end
+      # end
     end
 
     def invalid_command
@@ -233,20 +245,4 @@ class CommandLineInterface
         return
     end
 
-    def print_articles
-      i = 1
-
-      user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
-      user_list.each do |article|
-        puts
-        puts "      #{i}. #{article.title}"
-        puts "      #{article.section}"
-        puts "      #{article.byline}"
-        puts "      #{article.abstract}"
-        puts "      #{article.short_url}"
-        puts
-        i+=1
-      end
-    end
 end
-
