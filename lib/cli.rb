@@ -201,7 +201,7 @@ class CommandLineInterface
       else
           @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
       end
-      
+
       @user_list.each do |article|
         puts
         puts "#{i}. #{article.title}"
@@ -223,14 +223,24 @@ class CommandLineInterface
     end
 
     def add_topic_to_favorites
-      puts "Select article to add to bookmarks (1-5)"
-      desired_article = gets.chomp
+      response = "y"
+        puts "Would you like to add an article to your favories? (y/n)"
+        while response == "y"
+        response = gets.chomp
+          if response == "y"
+        puts "Select article to add to bookmarks (1-5)"
+        desired_article = gets.chomp
 
-      if (1..(@user_list.length+1)).to_a.include?(desired_article.to_i) == false
-        puts "Nothing added to bookmarks"
-      else
-      BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
-        puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
+            if (1..(@user_list.length+1)).to_a.include?(desired_article.to_i) == false
+              puts "Nothing added to bookmarks"
+            else
+            BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
+              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
+            end
+            puts "Would you like to add another article to your favories? (y/n)"
+        else
+          response = "n"
+        end
       end
     end
 
