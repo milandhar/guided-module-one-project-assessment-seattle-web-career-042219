@@ -1,3 +1,28 @@
+#NYTimes Bookmark Tool
+
+The NYTimes Bookmark Tool is a CLI application written in Ruby that allows users to interact with the [New York Times Top Stories API](https://developer.nytimes.com/docs/top-stories-product/1/overview). The Tool allows the user to view the most recently published NYTimes stories based on the user's desired section, and gives the user an option to save articles to a bookmark list. You will be able to save time by viewing the top stories of the day in seconds!
+
+## Installation
+
+* Make sure you have [Ruby](https://www.ruby-lang.org/en/documentation/installation/) installed.
+* Fork and Clone the [repository](https://github.com/milandhar/guided-module-one-project-assessment-seattle-web-career-042219)
+* Navigate using `cd` to the folder containing `guided-module-one-project-assessment-seattle-web-career-042219`
+* Run `bundle install`
+* Create and migrate the tables using `rake db:migrate`
+* Start the program: `ruby bin/run.rb`
+
+
+## Using the Program
+
+The CLI prompts will walk you through the flow of the Tool. First you will create a new username which you can use in future sessions to log in and access/edit your bookmarks.
+
+You will then be given a numbered list of all possible NYTimes sections. You will be able to select which section you are interested in, and then will see the top-5 most recent articles published under that section.
+
+Next, you will have the option to add any/all of the top-5 articles to your bookmarks, and can view your entire bookmark list. After viewing your bookmarks, you can decide to delete a bookmark from the list if you have already read it or no longer are interested in the article.
+
+
+
+
 Module One Final Project
 ========================
 
