@@ -1,6 +1,6 @@
 require 'pry'
 require 'time'
-require 'word_wrap/core_ext'
+require 'launchy'
 require_relative '../db/seeds.rb'
 
 
@@ -219,14 +219,24 @@ class CommandLineInterface
       end
 
       @user_list.each do |article|
-        puts
-        puts "#{i}. #{article.title}"
-        puts "      #{article.byline}"
-        puts "      #{article.abstract}"
-        puts "      #{article.short_url}"
-        puts "      Published: #{Time.parse(article.published_date)}"
-        puts
-        i+=1
+
+            paragraph = article.abstract[0..90] + "..."
+            article_description = <<~ARTICLE_DESCRIPTION
+
+            #{i}.   #{article.title.colorize(:light_green)}
+
+                    #{article.byline} 
+
+                    #{paragraph}
+
+                    #{article.short_url}
+
+                    Published: #{Time.parse(article.published_date)}
+
+
+            ARTICLE_DESCRIPTION
+            i += 1
+            puts article_description
       end
       if @user_list.length == 0
         puts "        Sorry, there are no recent articles in that section"
@@ -286,22 +296,45 @@ class CommandLineInterface
       end
     end
 
+
     def print_bookmarks
       j = 1
       puts "
       BOOKMARKS
-      ......................................................"
-      User.all.find(@user_id).articles.each do |bookmarked_article|
-          bookmark = Article.find(bookmarked_article.id)
-          puts
-          puts "#{j}.   #{bookmark.title}"
-          puts "        #{bookmark.byline}"
-          puts "        #{bookmark.abstract}"
-          puts "        #{bookmark.short_url}"
-          puts
-          j += 1
+      _________________________________________________________"
+   
+        User.all.find(@user_id).articles.each do |bookmarked_article|
+            bookmark = Article.find(bookmarked_article.id)
+
+            paragraph = (bookmark.abstract[0..90] + "...")
+            @url = bookmark.short_url
+
+            puts "#{j}.   #{bookmark.title.colorize(:light_green)}"
+            puts
+            puts "        #{bookmark.byline}"
+            puts
+            puts "        #{paragraph}"
+            puts
+            puts "        #{(bookmark.short_url)}"
+            puts
+            j += 1
+        end
+
       end
 
+    end
+
+    def open_website
+      print "        Do you want to open an article in your web browser? (y/n): "
+      open_url = gets.chomp
+      puts
+      if open_url == "y"
+        print "        Please enter the number from the article you want to open: "
+        open_browser = gets.chomp
+        puts
+        website = User.all.find(@user_id).articles[open_browser.to_i - 1]
+        Launchy.open(website.short_url)
+      end
     end
 
     def remove_article_from_bookmarks
@@ -365,5 +398,5 @@ class CommandLineInterface
       else
         @live = false
       end
-    end
   end
+end
