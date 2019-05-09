@@ -16,7 +16,8 @@ while cli.live == true
   if cli.user_list.length > 0
     cli.add_topic_to_favorites
   end
+  cli.view_bookmarks
   cli.view_another_section_prompt
 end
-
 cli.quit_program
+

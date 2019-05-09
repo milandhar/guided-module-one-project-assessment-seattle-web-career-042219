@@ -240,11 +240,14 @@ class CommandLineInterface
 
     def add_topic_to_favorites
       response = "y"
-      print "       Would you like to add an article to your favories? (y/n)"
+
+      print "       Would you like to add an article to your favories? (y/n) "
+
         while response == "y"
         response = gets.chomp
+        puts
           if response == "y"
-        print "       Select article to add to bookmarks (1-#{@user_list.length})"
+        print "       Select article to add to bookmarks (1-#{@user_list.length}) "
         desired_article = gets.chomp
             if (1..(@user_list.length)).to_a.include?(desired_article.to_i) == false
               puts "Please enter a valid number (1-#{@user_list.length})"
@@ -257,6 +260,7 @@ class CommandLineInterface
               puts "Would you like to add another article to your favories? (y/n)"
             end
         elsif response == "n"
+
           response = "n"
         elsif response == "q"
           quit_program
@@ -267,6 +271,28 @@ class CommandLineInterface
       end
     end
 
+    def view_bookmarks
+      puts
+      print "        To view your your List of Bookmarked articles, press '8'"
+      view_bookmarks = gets.chomp
+      puts
+       if view_bookmarks == "8"
+        j = 1
+        BookmarkedArticle.all.each do |bookmarked_article|
+          if bookmarked_article.user_id == @user_id
+            bookmark = Article.find(bookmarked_article.article_id)
+            puts
+            puts "#{j}. #{bookmark.title}"
+            #puts "      #{article.section}"
+            puts "      #{bookmark.byline}"
+            puts "      #{bookmark.abstract}"
+            puts "      #{bookmark.short_url}"
+            puts
+            j += 1
+          end
+        end
+      end
+    end
 
     def invalid_command
       puts "        Invalid Command. Please try again or press q to quit"
@@ -296,6 +322,3 @@ class CommandLineInterface
     end
 
 
-
-
-end
