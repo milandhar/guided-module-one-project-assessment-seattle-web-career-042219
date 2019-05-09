@@ -2,6 +2,7 @@ require_relative '../config/environment'
 require_relative '../lib/cli.rb'
 require_relative '../db/seeds.rb'
 require 'pry'
+require 'word_wrap'
 
 cli = CommandLineInterface.new
 
@@ -17,8 +18,7 @@ while cli.live == true
     cli.add_topic_to_favorites
   end
   cli.view_bookmarks
-  cli.remove_article_from_bookmarks
+  #cli.remove_article_from_bookmarks
   cli.view_another_section_prompt
 end
 cli.quit_program
-

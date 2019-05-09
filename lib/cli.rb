@@ -1,6 +1,8 @@
 require 'pry'
 require 'time'
+require 'word_wrap/core_ext'
 require_relative '../db/seeds.rb'
+
 
 class CommandLineInterface
   attr_accessor :chosen_topic, :user_name, :live
@@ -253,11 +255,11 @@ class CommandLineInterface
               puts "Please enter a valid number (1-#{@user_list.length})"
               desired_article = gets.chomp
               puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
-              puts "Would you like to add another article to your favories? (y/n)"
+              print "Would you like to add another article to your favories? (y/n) "
             else
             BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
               puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
-              puts "Would you like to add another article to your favories? (y/n)"
+              print "Would you like to add another article to your favories? (y/n) "
             end
         elsif response == "n"
 
@@ -273,14 +275,15 @@ class CommandLineInterface
 
     def view_bookmarks
       puts
-      print "        To view your your List of Bookmarked articles, press '8'"
+      print "      To view your your List of Bookmarked articles, press '8' "
       view_bookmarks = gets.chomp
       puts
        if view_bookmarks == "8"
         j = 1
-        User.all.find(@user_id).articles.each do |bookmarked_article|
-            bookmark = Article.find(bookmarked_article.id)
-            puts
+        BookmarkedArticle.all.each do |bookmarked_article|
+          if bookmarked_article.user_id == @user_id
+            bookmark = Article.find(bookmarked_article.article_id)
+              puts
             puts "#{j}. #{bookmark.title}"
             #puts "      #{article.section}"
             puts "      #{bookmark.byline}"
@@ -289,21 +292,7 @@ class CommandLineInterface
             puts
             j += 1
           end
-      end
-    end
-
-    def remove_article_from_bookmarks
-      print "Do you want you remove an article from your Bookmarks? (y/n): "
-      user_answer = gets.chomp
-      puts
-      if user_answer == "y"
-        print "Please enter the the number from the article you want to remove: "
-        delete_number = gets.chomp
-        puts
-        delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
-        delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
-        BookmarkedArticle.destroy(delete_bookmark.id)
-        puts "#{delete_article.title} has been removed from your bookmarks!"
+        end
       end
     end
 
@@ -325,7 +314,7 @@ class CommandLineInterface
 
     def view_another_section_prompt
       puts
-      print "        Would you like to view another section? (y/n)"
+      print "        Would you like to view another section? (y/n) "
       repeat_response = gets.chomp
       if repeat_response == "y"
         @live = true
