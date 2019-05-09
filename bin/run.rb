@@ -8,4 +8,6 @@ cli.greeting_prompt
 cli.topic_prompt
 cli.interpolate_url_and_seed_db(cli.chosen_topic)
 cli.print_articles
-cli.add_topic_to_favorites
+if cli.user_list.length > 0
+  cli.add_topic_to_favorites
+end

@@ -16,6 +16,10 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
         if article["subsection"] == chosen_topic.capitalize
           article
         end
+      elsif chosen_topic == "national"
+        if article["section"] == "U.S."
+          article
+        end
       else
         if article["section"] == chosen_topic.capitalize
           article

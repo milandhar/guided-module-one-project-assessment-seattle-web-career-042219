@@ -3,7 +3,7 @@ require_relative '../db/seeds.rb'
 
 class CommandLineInterface
   attr_accessor :chosen_topic, :user_name
-  attr_reader :id
+  attr_reader :id, :user_list
 
   @@article_limit = 5
   @chosen_topic = ""
@@ -195,31 +195,45 @@ class CommandLineInterface
     def print_articles
       i = 1
 
-      @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      if @chosen_topic == "national"
+          corrected_topic = "U.S."
+          @user_list =  Article.where(section: "U.S.").order('published_date desc').limit(@@article_limit)
+      else
+          @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
+      end
+      
       @user_list.each do |article|
         puts
         puts "#{i}. #{article.title}"
-        puts "      #{article.section}"
+        #puts "      #{article.section}"
         puts "      #{article.byline}"
         puts "      #{article.abstract}"
         puts "      #{article.short_url}"
         puts
         i+=1
       end
-      @user_list
+      if @user_list.length == 0
+        puts "Sorry, there are no recent articles in that section"
+
+      else
+        @user_list
+      end
+
+
     end
 
     def add_topic_to_favorites
       puts "Select article to add to bookmarks (1-5)"
       desired_article = gets.chomp
 
-      if desired_article == ""
+      if (1..(@user_list.length+1)).to_a.include?(desired_article.to_i) == false
         puts "Nothing added to bookmarks"
       else
       BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
         puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
       end
     end
+
 
     def invalid_command
       puts "        Please try again or press q to quit"
@@ -234,7 +248,7 @@ class CommandLineInterface
 
     def end_session
         puts "        Good Bye"
-        return
+        abort
     end
 
 end
