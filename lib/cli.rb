@@ -22,9 +22,10 @@ class CommandLineInterface
         puts
         puts "        Before we dwell into the NYTimes,
         enter your username, or if you don't have one,
-        press enter to create a new username!"
+        press enter to create a new username!
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         puts
-        print "        username: "
+        print "        Username: "
         user_input = gets.chomp
 
         if user_input == "q"
@@ -39,11 +40,16 @@ class CommandLineInterface
     end
 
     def create_user
-        print "Create Username: "
+        print "        Create Username: "
         new_name = gets.chomp
         new_user = User.create(name: new_name)
         @user_name = new_name
         @user_id = new_user.id
+        puts
+        puts "        ````````````````````````````````````````````````````````````````````````````````        
+        Welcome #{new_name}! Thank you for using the NYTimes Bookmark Tool!
+        _______________________________________________________________________________"
+        puts
     end
 
     def load_user(user_input)
@@ -52,14 +58,17 @@ class CommandLineInterface
           quit_program
         elsif User.find_by(name: user_input) == nil
           puts "        Incorrect user name!"
-          puts "        Would you like to create a new user name? (y/n)"
+          puts
+          print "        Would you like to create a new user name? (y/n): "
           user_decision = gets.chomp
+          puts
           if user_decision == "y"
             create_user
           elsif user_decision == "n"
             print "        Please enter correct username: "
             user_input = gets.chomp
             load_user(user_input)
+            puts
           end
         else
           user_input == User.find_by(name: user_input).name
