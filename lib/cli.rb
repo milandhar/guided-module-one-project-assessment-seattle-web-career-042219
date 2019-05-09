@@ -308,7 +308,7 @@ class CommandLineInterface
     end
 
     def invalid_command
-      puts "        Invalid Command. Please try again or press q to quit"
+      print "        Invalid Command. Please try again or press q to quit "
     end
 
     def quit_program
@@ -333,5 +333,4 @@ class CommandLineInterface
         @live = false
       end
     end
-
-
+  end
