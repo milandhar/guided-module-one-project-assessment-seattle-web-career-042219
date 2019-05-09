@@ -8,4 +8,5 @@ gem "require_all"
 gem "faker"
 gem "rest-client"
 gem "json"
-gem 'word_wrap'
+gem "colorize"
+gem "launchy"
