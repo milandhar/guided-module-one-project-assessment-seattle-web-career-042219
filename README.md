@@ -40,7 +40,7 @@ Here is the list of the welcome screen along with the NYTimes sections the user 
 ![Imgur](https://i.imgur.com/aZSWato.png)
 
 Here is an example of a top-5 article result list:
-![Imgur](https://i.imgur.com/ZUZmWLY.png)
+[Imgur](https://i.imgur.com/ZUZmWLY.png?1)
 
 ## Credits
 The NYTimes Bookmark Tool was developed by [Milan Dhar](https://github.com/milandhar) and [Vadim Stakhnyuk](https://github.com/VadimS4).
