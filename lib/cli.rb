@@ -219,14 +219,6 @@ class CommandLineInterface
       BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
         puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
       end
-
-      # Article.all.each do |article|
-      #   puts "Do you want to Bookmark this article?: (yes/no)"
-      #   if user_bookmark == "yes"
-      #     BookmarkedArticle.create(user_id: @user_id, article_id: article.id)
-      #   elsif user_bookmark == "no"
-      #   end
-      # end
     end
 
     def invalid_command
