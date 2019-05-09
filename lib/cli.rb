@@ -265,7 +265,6 @@ class CommandLineInterface
 
     def view_bookmarks
       puts
-
       print "        To view your your List of Bookmarked articles, press '8' : "
 
       view_bookmarks = gets.chomp
@@ -298,7 +297,7 @@ class CommandLineInterface
         delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
         delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
         BookmarkedArticle.destroy(delete_bookmark.id)
-        puts "        #{delete_article.title} has been removed from your bookmarks!"
+        puts "        \"#{delete_article.title}\" has been removed from your bookmarks!"
 
       end
     end
