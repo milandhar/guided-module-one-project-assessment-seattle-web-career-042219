@@ -122,6 +122,7 @@ class CommandLineInterface
       print "        Select a Section you would like to read about! (or press 'q' to quit): "
 
       user_selection = gets.chomp
+      puts
       if user_selection == "q"
         quit_program
       end
@@ -187,13 +188,6 @@ class CommandLineInterface
       end
     end
 
-    # def get_topic
-    #     print "        Enter a Section you would like to read about (or press 'q' to quit): "
-    #     topic = gets.chomp
-    #     article = Article.all.find_by(section: topic)
-    #     interpolate_url_and_seed_db
-    # end
-
     def interpolate_url_and_seed_db(chosen_topic)
       api_url = ""
       if @chosen_topic == "error"
@@ -203,9 +197,7 @@ class CommandLineInterface
         end_session
       else
         api_url = "https://api.nytimes.com/svc/topstories/v2/#{chosen_topic}.json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
-        # binding.pry
         upload_articles_to_db(get_articles_from_api(api_url, @chosen_topic), @chosen_topic)
-
       end
     end
 
@@ -222,7 +214,6 @@ class CommandLineInterface
       @user_list.each do |article|
         puts
         puts "#{i}. #{article.title}"
-        #puts "      #{article.section}"
         puts "      #{article.byline}"
         puts "      #{article.abstract}"
         puts "      #{article.short_url}"
@@ -231,38 +222,37 @@ class CommandLineInterface
         i+=1
       end
       if @user_list.length == 0
-        puts "Sorry, there are no recent articles in that section"
-
+        puts "        Sorry, there are no recent articles in that section"
       else
         @user_list
       end
-
-
     end
 
     def add_topic_to_favorites
       response = "y"
 
-      print "       Would you like to add an article to your favories? (y/n) "
+      print "        Would you like to add an article to your favories? (y/n): "
 
         while response == "y"
-        response = gets.chomp
+          response = gets.chomp
         puts
           if response == "y"
-        print "       Select article to add to bookmarks (1-#{@user_list.length}) "
+        print "        Select article to add to bookmarks (1-#{@user_list.length}): "
         desired_article = gets.chomp
             if (1..(@user_list.length)).to_a.include?(desired_article.to_i) == false
-              puts "Please enter a valid number (1-#{@user_list.length})"
+              puts "        Please enter a valid number (1-#{@user_list.length})"
               desired_article = gets.chomp
-              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
-              print "Would you like to add another article to your favories? (y/n) "
+
+              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks!"
+              puts
+              print "        Would you like to add another article to your favories? (y/n): "
             else
             BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
-              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
-              print "Would you like to add another article to your favories? (y/n) "
+              puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks!"
+              puts
+              print "        Would you like to add another article to your favories? (y/n): "
             end
         elsif response == "n"
-
           response = "n"
         elsif response == "q"
           quit_program
@@ -275,34 +265,53 @@ class CommandLineInterface
 
     def view_bookmarks
       puts
-      print "      To view your your List of Bookmarked articles, press '8' "
+
+      print "        To view your your List of Bookmarked articles, press '8' : "
+
       view_bookmarks = gets.chomp
       puts
        if view_bookmarks == "8"
         j = 1
-        BookmarkedArticle.all.each do |bookmarked_article|
-          if bookmarked_article.user_id == @user_id
-            bookmark = Article.find(bookmarked_article.article_id)
-              puts
-            puts "#{j}. #{bookmark.title}"
-            #puts "      #{article.section}"
-            puts "      #{bookmark.byline}"
-            puts "      #{bookmark.abstract}"
-            puts "      #{bookmark.short_url}"
+
+        User.all.find(@user_id).articles.each do |bookmarked_article|
+            bookmark = Article.find(bookmarked_article.id)
+            puts
+            puts "#{j}.   #{bookmark.title}"
+            #puts "       #{article.section}"
+            puts "        #{bookmark.byline}"
+            puts "        #{bookmark.abstract}"
+            puts "        #{bookmark.short_url}"
             puts
             j += 1
-          end
         end
       end
     end
 
+    def remove_article_from_bookmarks
+      print "        Do you want you remove an article from your Bookmarks? (y/n): "
+      user_answer = gets.chomp
+      puts
+      if user_answer == "y"
+        print "        Please enter the the number from the article you want to remove: "
+        delete_number = gets.chomp
+        puts
+        delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
+        delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
+        BookmarkedArticle.destroy(delete_bookmark.id)
+        puts "        #{delete_article.title} has been removed from your bookmarks!"
+
+      end
+    end
+
     def invalid_command
-      print "        Invalid Command. Please try again or press q to quit "
+      print "        Invalid Command. Please try again or press q to quit: "
     end
 
     def quit_program
       puts
-      puts "        Goodbye! Thank you for using NYTimes Bookmark Tool :)"
+      puts "      ``````````````````````````````````````````````````````
+      Goodbye! Thank you for using NYTimes Bookmark Tool :)
+      ......................................................"
       puts
       abort
     end
@@ -314,8 +323,9 @@ class CommandLineInterface
 
     def view_another_section_prompt
       puts
-      print "        Would you like to view another section? (y/n) "
+      print "        Would you like to view another section? (y/n): "
       repeat_response = gets.chomp
+      puts
       if repeat_response == "y"
         @live = true
       else
