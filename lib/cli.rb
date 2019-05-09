@@ -15,6 +15,7 @@ class CommandLineInterface
   @user_id = 0
   @user_list = []
   @live = true
+  @remove_flag = true
 
     def initialize
       @live = true
@@ -65,6 +66,7 @@ class CommandLineInterface
         if user_input == "q"
           quit_program
         elsif User.find_by(name: user_input) == nil
+          puts
           puts "        Incorrect user name!"
           puts
           print "        Would you like to create a new user name? (y/n): "
@@ -77,6 +79,11 @@ class CommandLineInterface
             user_input = gets.chomp
             load_user(user_input)
             puts
+          elsif user_decision == "q"
+            end_session
+          else
+            invalid_command
+            load_user(user_input)
           end
         else
           user_input == User.find_by(name: user_input).name
@@ -241,26 +248,27 @@ class CommandLineInterface
     def add_topic_to_favorites
       response = "y"
 
-      print "        Would you like to add an article to your favories? (y/n): "
+      print "        Would you like to add an article to your Bookmarks? (y/n): "
 
         while response == "y"
           response = gets.chomp
         puts
           if response == "y"
-        print "        Select article to add to bookmarks (1-#{@user_list.length}): "
+        print "        Select article to add to Bookmarks (1-#{@user_list.length}): "
         desired_article = gets.chomp
             if (1..(@user_list.length)).to_a.include?(desired_article.to_i) == false
               puts "        Please enter a valid number (1-#{@user_list.length})"
               desired_article = gets.chomp
 
-              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks!"
+              puts "\"#{@user_list[desired_article.to_i - 1].title}\" has been added to your Bookmarks!"
               puts
-              print "        Would you like to add another article to your favories? (y/n): "
+              print "        Would you like to add another article to your Bookmarks? (y/n): "
             else
             BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
-              puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks!"
               puts
-              print "        Would you like to add another article to your favories? (y/n): "
+              puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your Bookmarks!"
+              puts
+              print "        Would you like to add another article to your Bookmarks? (y/n): "
             end
         elsif response == "n"
           response = "n"
@@ -274,15 +282,27 @@ class CommandLineInterface
     end
 
     def view_bookmarks
-      puts
-
-      print "        To view your your List of Bookmarked articles, press '8' : "
+      print "        Do you want to view your your list of Bookmarked articles? (y/n): "
 
       view_bookmarks = gets.chomp
       puts
-       if view_bookmarks == "8"
-        j = 1
+       if view_bookmarks == "y"
+        print_bookmarks
+      elsif view_bookmarks == "n"
+        return
+      else
+        "        Invalid Command!"
+        view_bookmarks
+      end
+    end
 
+
+    def print_bookmarks
+      j = 1
+      puts "
+      BOOKMARKS
+      _________________________________________________________"
+   
         User.all.find(@user_id).articles.each do |bookmarked_article|
             bookmark = Article.find(bookmarked_article.id)
 
@@ -299,7 +319,9 @@ class CommandLineInterface
             puts
             j += 1
         end
+
       end
+
     end
 
     def open_website
@@ -316,23 +338,41 @@ class CommandLineInterface
     end
 
     def remove_article_from_bookmarks
-      print "        Do you want you remove an article from your Bookmarks? (y/n): "
-      user_answer = gets.chomp
-      puts
-      if user_answer == "y"
-        print "        Please enter the the number from the article you want to remove: "
-        delete_number = gets.chomp
-        puts
-        delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
-        delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
-        BookmarkedArticle.destroy(delete_bookmark.id)
-        puts "        #{delete_article.title} has been removed from your bookmarks!"
 
-      end
+      while @remove_flag = true
+        print "        Do you want to remove an article from your Bookmarks? (y/n): "
+        user_answer = gets.chomp
+        puts
+        if user_answer == "y"
+          print "        Please enter the number of the article you want to remove: (1-#{User.all.find(@user_id).articles.length}): "
+          delete_number = gets.chomp
+          puts
+          delete_article = User.all.find(@user_id).articles[delete_number.to_i - 1]
+          delete_bookmark = BookmarkedArticle.find_by(user_id: @user_id, article_id: delete_article.id)
+          BookmarkedArticle.destroy(delete_bookmark.id)
+          puts "        \"#{delete_article.title}\" has been removed from your Bookmarks!"
+          puts
+          if User.all.find(@user_id).articles.length > 0
+            print "         Would you like to remove another article from your Bookmarks? (y/n) "
+            another_removal = gets.chomp
+            puts
+            if another_removal == 'y'
+              remove_article_from_bookmarks
+            else
+              @remove_flag = false
+              return
+            end
+            return
+          end
+        else
+            @remove_flag = false
+            return
+          end
+        end
     end
 
     def invalid_command
-      print "        Invalid Command. Please try again or press q to quit: "
+      puts "        Invalid Command. Please try again or press q to quit: "
     end
 
     def quit_program
@@ -350,7 +390,6 @@ class CommandLineInterface
     end
 
     def view_another_section_prompt
-      puts
       print "        Would you like to view another section? (y/n): "
       repeat_response = gets.chomp
       puts

@@ -19,7 +19,8 @@ while cli.live == true
   end
   cli.view_bookmarks
   cli.open_website
+
   cli.remove_article_from_bookmarks
   cli.view_another_section_prompt
 end
-cli.quit_program
+  cli.quit_program
