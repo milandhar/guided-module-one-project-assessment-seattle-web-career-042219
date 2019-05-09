@@ -29,7 +29,7 @@ Here are the features included in this version of the NYTimes Bookmark Tool:
 * Select an NYTimes section to view recent articles
 * Bookmark an article
 * View your bookmarks
-* Open a bookmark url in your default web browser 
+* Open a bookmark url in your default web browser
 * Delete a bookmark from your list
 
 
@@ -40,7 +40,7 @@ Here is the list of the welcome screen along with the NYTimes sections the user 
 ![Imgur](https://i.imgur.com/aZSWato.png)
 
 Here is an example of a top-5 article result list:
-[Imgur](https://i.imgur.com/Yd73pga.png)
+![Imgur](https://i.imgur.com/ZUZmWLY.png)
 
 ## Credits
 The NYTimes Bookmark Tool was developed by [Milan Dhar](https://github.com/milandhar) and [Vadim Stakhnyuk](https://github.com/VadimS4).

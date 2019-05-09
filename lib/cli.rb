@@ -326,7 +326,8 @@ class CommandLineInterface
       puts
       while loop_open == true
       if open_url == "y"
-        print "        Please enter the number from the article you want to open: "
+        print_bookmarks
+        print "        Please enter the number of the article you want to open (1-#{User.all.find(@user_id).articles.length}): "
         open_browser = gets.chomp
         puts
         website = User.all.find(@user_id).articles[open_browser.to_i - 1]
