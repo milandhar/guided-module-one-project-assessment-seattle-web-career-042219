@@ -10,6 +10,11 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
     response_string = RestClient.get(api_url)
     response_hash = JSON.parse(response_string)
 
+    if chosen_topic == "home"
+      response_hash["results"].each do |article|
+        article["section"] = "Home" 
+      end
+    end
 
     article_array = response_hash["results"].map do |article|
       if chosen_topic == "politics"

@@ -46,7 +46,7 @@ class CommandLineInterface
         @user_name = new_name
         @user_id = new_user.id
         puts
-        puts "        ````````````````````````````````````````````````````````````````````````````````        
+        puts "        ````````````````````````````````````````````````````````````````````````````````
         Welcome #{new_name}! Thank you for using the NYTimes Bookmark Tool!
         _______________________________________________________________________________"
         puts
@@ -269,5 +269,6 @@ class CommandLineInterface
         puts "        Good Bye"
         abort
     end
+
 
 end
