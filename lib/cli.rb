@@ -2,7 +2,7 @@ require 'pry'
 require_relative '../db/seeds.rb'
 
 class CommandLineInterface
-  attr_accessor :chosen_topic, :user_name
+  attr_accessor :chosen_topic, :user_name, :live
   attr_reader :id, :user_list
 
   @@article_limit = 5
@@ -11,6 +11,11 @@ class CommandLineInterface
   @user_name = ""
   @user_id = 0
   @user_list = []
+  @live = true
+
+    def initialize
+      @live = true
+    end
 
     def greeting_prompt
         system('clear')
@@ -233,29 +238,36 @@ class CommandLineInterface
 
     def add_topic_to_favorites
       response = "y"
-        puts "Would you like to add an article to your favories? (y/n)"
+      print "       Would you like to add an article to your favories? (y/n)"
         while response == "y"
         response = gets.chomp
           if response == "y"
-        puts "Select article to add to bookmarks (1-5)"
+        print "       Select article to add to bookmarks (1-#{@user_list.length})"
         desired_article = gets.chomp
-
-            if (1..(@user_list.length+1)).to_a.include?(desired_article.to_i) == false
-              puts "Nothing added to bookmarks"
+            if (1..(@user_list.length)).to_a.include?(desired_article.to_i) == false
+              puts "Please enter a valid number (1-#{@user_list.length})"
+              desired_article = gets.chomp
+              puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
+              puts "Would you like to add another article to your favories? (y/n)"
             else
             BookmarkedArticle.create(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
               puts "#{@user_list[desired_article.to_i - 1].title} has been added to your bookmarks"
+              puts "Would you like to add another article to your favories? (y/n)"
             end
-            puts "Would you like to add another article to your favories? (y/n)"
-        else
+        elsif response == "n"
           response = "n"
+        elsif response == "q"
+          quit_program
+        else
+          invalid_command
+          response = "y"
         end
       end
     end
 
 
     def invalid_command
-      puts "        Please try again or press q to quit"
+      puts "        Invalid Command. Please try again or press q to quit"
     end
 
     def quit_program
@@ -268,6 +280,17 @@ class CommandLineInterface
     def end_session
         puts "        Good Bye"
         abort
+    end
+
+    def view_another_section_prompt
+      puts
+      print "        Would you like to view another section? (y/n)"
+      repeat_response = gets.chomp
+      if repeat_response == "y"
+        @live == true
+      else
+        @live == false
+      end
     end
 
 

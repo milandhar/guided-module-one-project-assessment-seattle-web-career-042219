@@ -12,8 +12,36 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
 
     if chosen_topic == "home"
       response_hash["results"].each do |article|
-        article["section"] = "Home" 
+        article["section"] = "Home"
       end
+    elsif chosen_topic == "automobiles"
+        response_hash["results"].each do |article|
+          article["section"] = "Automobiles"
+        end
+    elsif chosen_topic == "insider"
+        response_hash["results"].each do |article|
+          article["section"] = "Insider"
+        end
+    elsif chosen_topic == "nyregion"
+        response_hash["results"].each do |article|
+          article["section"] = "Nyregion"
+        end
+      elsif chosen_topic == "realestate"
+          response_hash["results"].each do |article|
+            article["section"] = "Realestate"
+          end
+      elsif chosen_topic == "sundayreview"
+          response_hash["results"].each do |article|
+            article["section"] = "Sundayreview"
+          end
+      elsif chosen_topic == "tmagazine"
+          response_hash["results"].each do |article|
+            article["section"] = "Tmagazine"
+          end
+      elsif chosen_topic == "upshot"
+          response_hash["results"].each do |article|
+            article["section"] = "Upshot"
+          end
     end
 
     article_array = response_hash["results"].map do |article|
