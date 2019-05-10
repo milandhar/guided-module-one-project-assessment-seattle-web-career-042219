@@ -266,7 +266,7 @@ class CommandLineInterface
             else
             BookmarkedArticle.find_or_create_by(user_id: @user_id, article_id: @user_list[desired_article.to_i - 1].id)
               puts
-              puts "        #{@user_list[desired_article.to_i - 1].title} has been added to your Bookmarks!"
+              puts "        \"#{@user_list[desired_article.to_i - 1].title}\" has been added to your Bookmarks!"
               puts
               print "        Would you like to add another article to your Bookmarks? (y/n): "
             end
@@ -299,9 +299,10 @@ class CommandLineInterface
 
     def print_bookmarks
       j = 1
-      puts "
+      bookmark_header = "
       BOOKMARKS
       ----------------------------------------------"
+      puts bookmark_header.colorize(:blue)
 
         User.all.find(@user_id).articles.each do |bookmarked_article|
             bookmark = Article.find(bookmarked_article.id)
@@ -326,21 +327,30 @@ class CommandLineInterface
       print "        Do you want to open an article in your web browser? (y/n): "
       open_url = gets.chomp
       puts
-      while loop_open == true
-      if open_url == "y"
-        print_bookmarks
-        print "        Please enter the number of the article you want to open (1-#{User.all.find(@user_id).articles.length}): "
-        open_browser = gets.chomp
+
+      if User.all.find(@user_id).articles.length == 0
+        puts "        You have no bookmarks saved"
         puts
-        website = User.all.find(@user_id).articles[open_browser.to_i - 1]
-        Launchy.open(website.short_url)
-        print "        Do you want to open another article? (y/n): "
-        open_url = gets.chomp
-        puts
+        add_topic_to_favorites
       else
-        loop_open = false
-      end
-      end
+
+
+        while loop_open == true
+        if open_url == "y"
+          print_bookmarks
+          print "        Please enter the number of the article you want to open (1-#{User.all.find(@user_id).articles.length}): "
+          open_browser = gets.chomp
+          puts
+          website = User.all.find(@user_id).articles[open_browser.to_i - 1]
+          Launchy.open(website.short_url)
+          print "        Do you want to open another article? (y/n): "
+          open_url = gets.chomp
+          puts
+        else
+          loop_open = false
+        end
+        end
+        end
     end
 
     def remove_article_from_bookmarks
@@ -405,5 +415,9 @@ class CommandLineInterface
       else
         @live = false
       end
+  end
+
+  def log_out?
+    
   end
 end
