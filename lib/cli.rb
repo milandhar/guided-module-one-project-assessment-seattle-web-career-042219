@@ -261,8 +261,9 @@ class CommandLineInterface
         print "        Select article to add to Bookmarks (1-#{@user_list.length}): "
         desired_article = gets.chomp
             if (1..(@user_list.length)).to_a.include?(desired_article.to_i) == false
-              puts "        Please enter a valid number (1-#{@user_list.length})"
+              print "        Please enter a valid number (1-#{@user_list.length}): "
               desired_article = gets.chomp
+              puts
 
               puts "\"#{@user_list[desired_article.to_i - 1].title}\" has been added to your Bookmarks!"
               puts
@@ -291,7 +292,14 @@ class CommandLineInterface
       view_bookmarks = gets.chomp
       puts
        if view_bookmarks == "y"
-        print_bookmarks
+         if User.all.find(@user_id).articles.length == 0
+           nobookmarks =  "        You have no bookmarks saved"
+           puts nobookmarks.colorize(:red)
+           puts
+           add_topic_to_favorites
+         else
+           print_bookmarks
+        end
       elsif view_bookmarks == "n"
         return
       else
