@@ -81,7 +81,7 @@ class CommandLineInterface
             load_user(user_input)
             puts
           elsif user_decision == "q"
-            end_session
+            quit_program
           else
             invalid_command
             load_user(user_input)
@@ -203,7 +203,7 @@ class CommandLineInterface
         invalid_command
         topic_prompt
       elsif @chosen_topic == "quit"
-        end_session
+        quit_program
       else
         api_url = "https://api.nytimes.com/svc/topstories/v2/#{chosen_topic}.json?api-key=WIEQBVb7KEpNBQMvXKMGJYSbf0FdgbYo"
         upload_articles_to_db(get_articles_from_api(api_url, @chosen_topic), @chosen_topic)
@@ -228,7 +228,7 @@ class CommandLineInterface
       ----------------------------------------------"
       @user_list.each do |article|
 
-            paragraph = article.abstract[0..150] + "..."
+            paragraph = article.abstract[0..165] + "..."
             article_description = <<~ARTICLE_DESCRIPTION
 
             #{i}.   #{article.title.colorize(:light_green)}
@@ -311,7 +311,7 @@ class CommandLineInterface
         User.all.find(@user_id).articles.each do |bookmarked_article|
             bookmark = Article.find(bookmarked_article.id)
 
-            paragraph = (bookmark.abstract[0..150] + "...")
+            paragraph = (bookmark.abstract[0..165] + "...")
             @url = bookmark.short_url
 
             puts "#{j}.   #{bookmark.title.colorize(:light_green)}"
@@ -346,12 +346,18 @@ class CommandLineInterface
           open_browser = gets.chomp
           puts
           website = User.all.find(@user_id).articles[open_browser.to_i - 1]
-          Launchy.open(website.short_url)
+          if website.short_url == nil
+            puts "        Sorry, this article has no URL."
+            puts
+          else
+            Launchy.open(website.short_url)
+          end
           print "        Do you want to open another article? (y/n): "
           open_url = gets.chomp
           puts
         else
           loop_open = false
+          return
         end
         end
         end
@@ -405,10 +411,6 @@ class CommandLineInterface
       abort
     end
 
-    def end_session
-        puts "        Good Bye"
-        abort
-    end
 
     def view_another_section_prompt
       print "        Would you like to view another section? (y/n): "
