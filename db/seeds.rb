@@ -62,14 +62,15 @@ def get_articles_from_api(api_url, chosen_topic = "politics")
 end
 
 
-  def upload_articles_to_db(articles, chosen_topic = "health")
+  def upload_articles_to_db(articles, chosen_topic = "home")
     articles.each do |article|
-      #binding.pry
-      if chosen_topic == "politics"
+      if Article.where("short_url = '#{article["short_url"]}'").length == 0
         #binding.pry
-        Article.find_or_create_by(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["subsection"], byline: article["byline"], abstract: article["abstract"])
-      else
-        Article.find_or_create_by(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["section"], byline: article["byline"], abstract: article["abstract"])
+        if chosen_topic == "politics"
+          Article.find_or_create_by(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["subsection"], byline: article["byline"], abstract: article["abstract"])
+        else
+          Article.find_or_create_by(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["section"], byline: article["byline"], abstract: article["abstract"])
+        end
       end
     end
   end
