@@ -403,13 +403,15 @@ class CommandLineInterface
 
     def quit_program
       puts
-      good_bye = "      ``````````````````````````````````````````````````````
-      Goodbye! Thank you for using NYTimes Bookmark Tool :)
-      ......................................................"
+      good_bye = "      ````````````````````````````````````````````````````````````````````````````````
+      Goodbye! Thank you for using NYTimes Bookmark Tool :) You have been logged out
+      ................................................................................"
       puts good_bye.colorize(:light_red)
       puts
       abort
     end
+
+
 
 
     def view_another_section_prompt
@@ -427,7 +429,7 @@ class CommandLineInterface
   end
 
   def log_out?
-    print "        Do you want to log out? (y/n) or press 'q' to exit out of application: "
+    print "        Do you want to log out? (y/n) or press 'q' to quit out of application: "
     log_out = gets.chomp
     puts
      if log_out == "y"

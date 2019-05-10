@@ -25,7 +25,7 @@ Next, you will have the option to add any/all of the top-5 articles to your book
 
 Here are the features included in this version of the NYTimes Bookmark Tool:
 * Create a user name
-* Access an existing user name
+* Login with an existing user name and log out when complete
 * Select an NYTimes section to view recent articles
 * Bookmark an article
 * View your bookmarks
