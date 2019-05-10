@@ -1,6 +1,6 @@
 # NYTimes Bookmark Tool
 
-The NYTimes Bookmark Tool is a CLI application written in Ruby that allows users to interact with the [New York Times Top Stories API](https://developer.nytimes.com/docs/top-stories-product/1/overview). The Tool allows the user to view the most recently published NYTimes stories based on the user's desired section, and gives the user an option to save articles to a bookmark list. You will be able to save time by viewing the top stories of the day in seconds!
+The NYTimes Bookmark Tool is a CLI application written in Ruby that allows users to interact with the [New York Times Top Stories API](https://developer.nytimes.com/docs/top-stories-product/1/overview). The Tool allows the user to view the most recently published NYTimes stories based on the user's desired section (Homepage, Science, Politics, etc), and gives the user the option to save articles to a bookmark list. You will be able to save time by viewing the top stories of the day in seconds, ad free!
 
 ## Installation
 
