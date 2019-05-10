@@ -216,6 +216,9 @@ class CommandLineInterface
       if @chosen_topic == "national"
           corrected_topic = "U.S."
           @user_list =  Article.where(section: "U.S.").order('published_date desc').limit(@@article_limit)
+      elsif @chosen_topic == "error"
+          invalid_command
+          topic_prompt
       else
           @user_list =  Article.where(section: @chosen_topic.capitalize).order('published_date desc').limit(@@article_limit)
       end
@@ -292,7 +295,7 @@ class CommandLineInterface
       elsif view_bookmarks == "n"
         return
       else
-        "        Invalid Command!"
+        puts "        Invalid Command!"
         view_bookmarks
       end
     end
@@ -389,7 +392,7 @@ class CommandLineInterface
     end
 
     def invalid_command
-      puts "        Invalid Command. Please try again or press q to quit: "
+      print "        Invalid Command. Please try again or press q to quit: "
     end
 
     def quit_program
