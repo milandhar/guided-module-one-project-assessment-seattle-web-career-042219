@@ -43,6 +43,7 @@ Here is an example of a top-5 article result list with a bookmark prompt:
 ![Imgur](https://i.imgur.com/3JOpySF.png)
 
 Here is a link to a video demo of the Tool:
+
 [![Youtube](https://img.youtube.com/vi/iccMIBIwvUQ/0.jpg)](https://www.youtube.com/watch?v=iccMIBIwvUQ)
 
 ## Credits
