@@ -26,10 +26,10 @@ class CommandLineInterface
         puts
         puts "        Welcome to NYTimes Bookmark Tool
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        The best resource for finding top articles
+        The best resource for finding hot articles
         based on your favorite topics!"
         puts
-        puts "        Before we dwell into the NYTimes,
+        puts "        Before we dive into the NYTimes,
         enter your username, or if you don't have one,
         press enter to create a new username!
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -418,6 +418,6 @@ class CommandLineInterface
   end
 
   def log_out?
-    
+
   end
 end

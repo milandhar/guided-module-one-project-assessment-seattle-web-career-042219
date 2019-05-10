@@ -65,7 +65,6 @@ end
   def upload_articles_to_db(articles, chosen_topic = "home")
     articles.each do |article|
       if Article.where("short_url = '#{article["short_url"]}'").length == 0
-        #binding.pry
         if chosen_topic == "politics"
           Article.find_or_create_by(title: article["title"], published_date: article["published_date"], short_url: article["short_url"], section: article["subsection"], byline: article["byline"], abstract: article["abstract"])
         else
