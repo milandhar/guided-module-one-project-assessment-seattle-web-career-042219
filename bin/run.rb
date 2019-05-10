@@ -3,23 +3,29 @@ require_relative '../lib/cli.rb'
 require_relative '../db/seeds.rb'
 require 'pry'
 
-cli = CommandLineInterface.new
+def run_CLI
 
-#binding.pry
+    cli = CommandLineInterface.new
 
-  cli.greeting_prompt
+    #binding.pry
 
-while cli.live == true
-  cli.topic_prompt
-  cli.interpolate_url_and_seed_db(cli.chosen_topic)
-  cli.print_articles
-  if cli.user_list.length > 0
-    cli.add_topic_to_favorites
-  end
-  cli.view_bookmarks
-  cli.open_website
+    cli.greeting_prompt
 
-  cli.remove_article_from_bookmarks
-  cli.view_another_section_prompt
+    while cli.live == true
+    cli.topic_prompt
+    cli.interpolate_url_and_seed_db(cli.chosen_topic)
+    cli.print_articles
+        if cli.user_list.length > 0
+            cli.add_topic_to_favorites
+        end
+        cli.view_bookmarks
+        cli.open_website
+
+        cli.remove_article_from_bookmarks
+        cli.log_out?
+        cli.view_another_section_prompt
+    end
+    cli.quit_program
 end
-  cli.quit_program
+
+run_CLI

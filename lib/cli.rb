@@ -240,6 +240,7 @@ class CommandLineInterface
       end
       if @user_list.length == 0
         puts "        Sorry, there are no recent articles in that section"
+        puts
       else
         @user_list
       end
@@ -412,12 +413,28 @@ class CommandLineInterface
       puts
       if repeat_response == "y"
         @live = true
-      else
+      elsif repeat_response == "n"
         @live = false
+      else
+        puts "Invalid Input!"
+        view_another_section_prompt
       end
   end
 
   def log_out?
-
+    print "        Do you want to log out? (y/n) or press 'q' to exit out of application: "
+    log_out = gets.chomp
+    puts
+     if log_out == "y"
+      run_CLI
+     elsif log_out == "n"
+      return
+     elsif log_out == "q"
+       quit_program
+     else
+      puts "        You have entered an unknown character, please try again!"
+      puts
+      log_out?
+     end
   end
 end
