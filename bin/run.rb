@@ -21,5 +21,5 @@ while cli.live == true
 
   cli.remove_article_from_bookmarks
   cli.view_another_section_prompt
-  cli.quit_program
 end
+  cli.quit_program
